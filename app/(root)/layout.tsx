@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { cookieToInitialState } from "wagmi";
-import { Wireframe, WireframeNav } from "@/components/wireframe";
+import { Navigation } from "@/components/navigation";
+import { Wireframe } from "@/components/wireframe";
 import { Providers } from "@/providers/providers";
 import { getConfig } from "@/wagmi";
 
@@ -15,14 +16,7 @@ export default async function BaseLayout({
   );
   return (
     <Wireframe>
-      <WireframeNav
-        className="border-slate-200 border-b bg-background/80 backdrop-blur"
-        position="top"
-      >
-        <div className="mx-auto flex h-full w-full max-w-5xl items-center px-4 sm:px-6">
-          <div className="font-bold tracking-wide">Tempo Examples</div>
-        </div>
-      </WireframeNav>
+      <Navigation />
 
       <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">
         <Providers initialState={initialState}>{children}</Providers>
