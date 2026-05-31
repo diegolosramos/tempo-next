@@ -1,10 +1,18 @@
+import { headers } from "next/headers";
+import { cookieToInitialState } from "wagmi";
 import { Wireframe, WireframeNav } from "@/components/wireframe";
+import { Providers } from "@/providers/providers";
+import { getConfig } from "@/wagmi";
 
-export default function BaseLayout({
+export default async function BaseLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const initialState = cookieToInitialState(
+    getConfig(),
+    (await headers()).get("cookie"),
+  );
   return (
     <Wireframe>
       <WireframeNav
@@ -17,7 +25,7 @@ export default function BaseLayout({
       </WireframeNav>
 
       <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">
-        {children}
+        <Providers initialState={initialState}>{children}</Providers>
       </main>
     </Wireframe>
   );
