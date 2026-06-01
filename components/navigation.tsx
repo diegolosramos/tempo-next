@@ -3,7 +3,7 @@
 import { CloudSun, Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { WireframeNav } from "@/components/wireframe";
+import { WireframeNav } from "@/components/ui/wireframe";
 import { cn } from "@/lib/utils";
 
 const navItems = [

@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { cookieToInitialState } from "wagmi";
 import { Navigation } from "@/components/navigation";
-import { Wireframe } from "@/components/wireframe";
+import { Wireframe } from "@/components/ui/wireframe";
 import { Providers } from "@/providers/providers";
 import { getConfig } from "@/wagmi";
 

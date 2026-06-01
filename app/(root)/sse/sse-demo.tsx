@@ -24,6 +24,35 @@ export function SseDemo() {
   const { address, chainId, isConnected } = useConnection();
   const { data: walletClient } = useConnectorClient();
 
+  const is402FlowError = (caught: unknown): boolean => {
+    if (!(caught instanceof Error)) {
+      return false;
+    }
+
+    return (
+      caught.message.includes("402") ||
+      caught.message.includes("Response has no body")
+    );
+  };
+
+  const streamWith402Retry = async (
+    session: ReturnType<typeof tempo.session>,
+    url: string,
+  ) => {
+    try {
+      return await session.sse(url);
+    } catch (caught) {
+      if (!is402FlowError(caught)) {
+        throw caught;
+      }
+
+      setStatus("Received 402 challenge, opening channel...");
+      await session.open();
+      setStatus("Retrying stream with voucher...");
+      return session.sse(url);
+    }
+  };
+
   const onStart = async () => {
     setError(null);
 
@@ -55,7 +84,8 @@ export function SseDemo() {
     });
 
     try {
-      const stream = await session.sse(
+      const stream = await streamWith402Retry(
+        session,
         `/sse/chat?prompt=${encodeURIComponent(parsedPrompt.data)}`,
       );
 
